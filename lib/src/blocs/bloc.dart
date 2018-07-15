@@ -24,4 +24,4 @@ class Bloc extends Validators {
   }
 }
 
-final bloc = Bloc(); // this is useful for global bloc
+//final bloc = Bloc(); // this is useful for global bloc
