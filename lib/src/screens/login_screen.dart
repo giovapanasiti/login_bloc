@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,7 +9,9 @@ class LoginScreen extends StatelessWidget {
         children: <Widget>[
           _emailField(),
           _passwordField(),
-          Container(margin: EdgeInsets.only(top: 35.00),),
+          Container(
+            margin: EdgeInsets.only(top: 35.00),
+          ),
           _submitButton(),
         ],
       ),
@@ -22,7 +23,7 @@ class LoginScreen extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: 'your@email.com',
-        labelText: 'Email Address'
+        labelText: 'Email Address',
       ),
     );
   }
@@ -31,8 +32,8 @@ class LoginScreen extends StatelessWidget {
     return TextField(
       obscureText: true,
       decoration: InputDecoration(
-          hintText: 'password',
-          labelText: 'Password'
+        hintText: 'password',
+        labelText: 'Password',
       ),
     );
   }
@@ -41,7 +42,7 @@ class LoginScreen extends StatelessWidget {
     return RaisedButton(
       child: Text('Login'),
       color: Colors.blue,
-      onPressed: (){},
+      onPressed: () {},
     );
   }
 }
