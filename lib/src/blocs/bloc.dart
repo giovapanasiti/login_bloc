@@ -4,8 +4,13 @@ import 'package:rxdart/rxdart.dart';
 
 class Bloc extends Validators {
 //  the .broadcast constructor allows the stream to be listened from multiple listeners
-  final _emailController = StreamController.broadcast<String>();
-  final _passwordController = StreamController.broadcast<String>();
+//  final _emailController = StreamController.broadcast<String>();
+//  final _passwordController = StreamController.broadcast<String>();
+
+// The behaviorSubject is already a controller broadcast but allows me to
+//  reach controller values back in time
+  final _emailController = BehaviorSubject<String>();
+  final _passwordController = BehaviorSubject<String>();
 
 //  add data to stream
   Function(String) get changeEmail => _emailController.sink.add;
@@ -20,9 +25,20 @@ class Bloc extends Validators {
       _passwordController.stream.transform(validatePassword);
 
 //  rx dart getter
-  // we return true because we just care there are no errors in the 2 stream
+// we return true because we just care there are no errors in the 2 stream
   Stream<bool> get submitValid =>
       Observable.combineLatest2(emailStream, passwordStream, (a, b) => true);
+
+
+  submit() {
+//    since I can't natively with Dart check back in streams we're
+//  going to use RxDart with BehaviorSubject
+    final validEmail = _emailController.value;
+    final validPassword = _passwordController.value;
+
+    print('$validEmail and $validPassword');
+//    Here we should post the login credentials to the server
+  }
 
   dispose() {
     // we can clean up our controller. Dispose is just a name convention

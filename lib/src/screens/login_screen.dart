@@ -5,7 +5,6 @@ import 'package:login_bloc/src/blocs/provider.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final bloc = Provider.of(context);
 
     return Container(
@@ -31,10 +30,9 @@ class LoginScreen extends StatelessWidget {
           onChanged: bloc.changeEmail,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            hintText: 'your@email.com',
-            labelText: 'Email Address',
-            errorText: snapshot.error
-          ),
+              hintText: 'your@email.com',
+              labelText: 'Email Address',
+              errorText: snapshot.error),
         );
       },
     );
@@ -48,10 +46,9 @@ class LoginScreen extends StatelessWidget {
           onChanged: bloc.changePassword,
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'password',
-            labelText: 'Password',
-            errorText: snapshot.error
-          ),
+              hintText: 'password',
+              labelText: 'Password',
+              errorText: snapshot.error),
         );
       },
     );
@@ -62,14 +59,10 @@ class LoginScreen extends StatelessWidget {
       stream: bloc.submitValid,
       builder: (context, snapshot) {
         return RaisedButton(
-          child: Text('Login'),
-          color: Colors.blue,
-//          if one of the two streams has an error the button onPressed gives null to stay unclickable
-          onPressed: snapshot.hasError ? null : () {
-            print('something');
-          }
-
-        );
+            child: Text('Login'),
+            color: Colors.blue,
+//          if one of the two streams has an error, or has no data, the button onPressed gives null to stay unclickable
+            onPressed: snapshot.hasData ? bloc.submit : null);
       },
     );
   }
