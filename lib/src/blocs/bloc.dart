@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:login_bloc/src/blocs/vaidators.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Bloc extends Validators {
-  final _emailController = StreamController<String>();
-  final _passwordController = StreamController<String>();
+//  the .broadcast constructor allows the stream to be listened from multiple listeners
+  final _emailController = StreamController.broadcast<String>();
+  final _passwordController = StreamController.broadcast<String>();
 
 //  add data to stream
   Function(String) get changeEmail => _emailController.sink.add;
@@ -17,8 +19,13 @@ class Bloc extends Validators {
   Stream<String> get passwordStream =>
       _passwordController.stream.transform(validatePassword);
 
+//  rx dart getter
+  // we return true because we just care there are no errors in the 2 stream
+  Stream<bool> get submitValid =>
+      Observable.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
-  dispose() { // we can clean up our controller. Dispose is just a name convention
+  dispose() {
+    // we can clean up our controller. Dispose is just a name convention
     _emailController.close();
     _passwordController.close();
   }
