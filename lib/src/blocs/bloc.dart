@@ -12,6 +12,10 @@ class Bloc extends Validators {
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
 
+//  final _authenticated = BehaviorSubject<bool>();
+  final token = BehaviorSubject<String>();
+  final _authenticated = BehaviorSubject<bool>();
+
 //  add data to stream
   Function(String) get changeEmail => _emailController.sink.add;
 
@@ -24,11 +28,12 @@ class Bloc extends Validators {
   Stream<String> get passwordStream =>
       _passwordController.stream.transform(validatePassword);
 
+  Stream<bool> get isAuthenticated => _authenticated.stream.transform(authCheck);
+
 //  rx dart getter
 // we return true because we just care there are no errors in the 2 stream
   Stream<bool> get submitValid =>
       Observable.combineLatest2(emailStream, passwordStream, (a, b) => true);
-
 
   submit() {
 //    since I can't natively with Dart check back in streams we're
@@ -36,8 +41,13 @@ class Bloc extends Validators {
     final validEmail = _emailController.value;
     final validPassword = _passwordController.value;
 
-    print('$validEmail and $validPassword');
 //    Here we should post the login credentials to the server
+
+//  We make the user authenticated
+    _authenticated.sink.add(true);
+//  token.add(_parsedJwt)
+
+    print('$validEmail and $validPassword. Auth: ${_authenticated.value}');
   }
 
   dispose() {
