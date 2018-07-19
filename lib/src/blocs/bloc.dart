@@ -50,6 +50,11 @@ class Bloc extends Validators {
     print('$validEmail and $validPassword. Auth: ${_authenticated.value}');
   }
 
+  logout() {
+    _authenticated.sink.add(false);
+//    Delete the stored token
+  }
+
   dispose() {
     // we can clean up our controller. Dispose is just a name convention
     _emailController.close();

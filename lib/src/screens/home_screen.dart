@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 35.00),
             ),
+            _logoutButton(bloc),
           ],
         ),
       ),
@@ -34,6 +35,20 @@ class HomeScreen extends StatelessWidget {
         } else {
           return Text('You are Authenticated');
         }
+      },
+    );
+  }
+
+  Widget _logoutButton(Bloc bloc) {
+    return StreamBuilder(
+      stream: bloc.isAuthenticated,
+      builder: (context, snapshot) {
+        return RaisedButton(
+            child: Text('Logout'),
+            color: Colors.blue,
+//          if one of the two streams has an error, or has no data, the button onPressed gives null to stay unclickable
+            onPressed: bloc.logout
+        );
       },
     );
   }
