@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:login_bloc/src/blocs/vaidators.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter/services.dart';
 
 class Bloc extends Validators {
 //  the .broadcast constructor allows the stream to be listened from multiple listeners
@@ -13,7 +14,7 @@ class Bloc extends Validators {
   final _passwordController = BehaviorSubject<String>();
 
 //  final _authenticated = BehaviorSubject<bool>();
-  final token = BehaviorSubject<String>();
+  final _tokenController = BehaviorSubject<String>();
   final _authenticated = BehaviorSubject<bool>();
 
 //  add data to stream
@@ -30,6 +31,8 @@ class Bloc extends Validators {
 
   Stream<bool> get isAuthenticated => _authenticated.stream.transform(authCheck);
 
+  Stream<String> get storedToken => _tokenController.stream;
+
 //  rx dart getter
 // we return true because we just care there are no errors in the 2 stream
   Stream<bool> get submitValid =>
@@ -44,15 +47,22 @@ class Bloc extends Validators {
 //    Here we should post the login credentials to the server
 
 //  We make the user authenticated
-    _authenticated.sink.add(true);
+
+    if (validEmail != '' && validPassword != '') {
+      _authenticated.sink.add(true);
+      _tokenController.sink.add('questa-e-solo-una-prova');
+    }
+
 //  token.add(_parsedJwt)
 
     print('$validEmail and $validPassword. Auth: ${_authenticated.value}');
   }
 
   logout() {
+    _emailController.sink.add('');
+//    _passwordController.sink.add('');
     _authenticated.sink.add(false);
-//    Delete the stored token
+    _tokenController.sink.add('');
   }
 
   dispose() {

@@ -33,7 +33,22 @@ class HomeScreen extends StatelessWidget {
         if (!snapshot.hasData) {
           return Text('You are not Authenticated');
         } else {
-          return Text('You are Authenticated');
+          return Container(
+            child: Column(
+              children: <Widget>[
+                Text('You are auth'),
+                StreamBuilder(
+                  stream: bloc.storedToken,
+                  initialData: '',
+                  builder: (context, snapshot) {
+                    return Text(
+                      '${snapshot.data}'
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
         }
       },
     );
