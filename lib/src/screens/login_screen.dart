@@ -7,18 +7,37 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = Provider.of(context);
 
-    return Container(
-      margin: EdgeInsets.all(20.00),
-      child: Column(
-        children: <Widget>[
-          _emailField(bloc),
-          _passwordField(bloc),
-          Container(
-            margin: EdgeInsets.only(top: 35.00),
-          ),
-          _submitButton(bloc),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
       ),
+      body: Container(
+        margin: EdgeInsets.all(20.00),
+        child: Column(
+          children: <Widget>[
+            _textField(bloc),
+            _emailField(bloc),
+            _passwordField(bloc),
+            Container(
+              margin: EdgeInsets.only(top: 35.00),
+            ),
+            _submitButton(bloc),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _textField(Bloc bloc) {
+    return StreamBuilder(
+      stream: bloc.isAuthenticated,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text('');
+        } else {
+          return Text(snapshot.data.toString());
+        }
+      },
     );
   }
 
